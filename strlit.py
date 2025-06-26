@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 
 from detect import run
 
@@ -21,14 +22,24 @@ col3, col4 = st.columns(2)
 # video_bytes = video_file.read()
 
 # st.video(video_bytes)
-
+THRESHOLD = 10
+frames = []
 with col1:
    # cam1 = st.text_input('cam #1', 'http://192.168.100.11:4747/video',key="cam1",label_visibility="collapsed",placeholder="cam #1 url")
    cam1 = st.text_input('cam #1', 'http://10.0.0.7:4747/video',key="cam1",label_visibility="collapsed",placeholder="cam #1 url")
    try:
-      frames = st.image(cam1,use_column_width =True)
+      frame = st.image(cam1,use_column_width =True)
+      frames.append(frame)
+      if len(frames==THRESHOLD):
+         video = np.ndarray(frames)
+         
+      
       fire_det = run(weights="model/yolov5s_best.pt", source=frames, data="fire.yaml", conf_thres=0.2)
-      cam1_feed = fire_det
+      
+      loaded_frames = st.image(fire_det, use_column_width =True)
+      
+
+      cam1_feed = loaded_frames
       # cam1_feed = st.image(cam1,use_column_width =True)
    except:
       st.image("Original-colour-bar.png")
