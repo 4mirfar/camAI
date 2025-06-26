@@ -1,5 +1,7 @@
 import streamlit as st
 
+from detect import run
+
 st.set_page_config(
     page_title="Live CCTV Feed",
     page_icon="🧊",
@@ -21,31 +23,35 @@ col3, col4 = st.columns(2)
 # st.video(video_bytes)
 
 with col1:
-   cam1 = st.text_input('cam #1', 'http://10.0.0.6::81/stream',key="cam1",label_visibility="collapsed",placeholder="cam #1 url")
+   # cam1 = st.text_input('cam #1', 'http://192.168.100.11:4747/video',key="cam1",label_visibility="collapsed",placeholder="cam #1 url")
+   cam1 = st.text_input('cam #1', 'http://10.0.0.7:4747/video',key="cam1",label_visibility="collapsed",placeholder="cam #1 url")
    try:
-      cam1_feed = st.image(cam1,use_column_width =True)
+      frames = st.image(cam1,use_column_width =True)
+      fire_det = run(weights="model/yolov5s_best.pt", source=frames, data="fire.yaml", conf_thres=0.2)
+      cam1_feed = fire_det
+      # cam1_feed = st.image(cam1,use_column_width =True)
    except:
       st.image("Original-colour-bar.png")
-with col2:
-   cam2 = st.text_input('cam #2', 'http://192.168.1.101:81/stream',key="cam2",label_visibility="collapsed",placeholder="cam #2 url")
-   try:
-      st.image(cam2,use_column_width =True)
-   except:
-      st.image("Original-colour-bar.png")
+# with col2:
+#    cam2 = st.text_input('cam #2', 'http://192.168.1.101:81/stream',key="cam2",label_visibility="collapsed",placeholder="cam #2 url")
+#    try:
+#       st.image(cam2,use_column_width =True)
+#    except:
+#       st.image("Original-colour-bar.png")
 
-with col3:
-   cam3 = st.text_input('cam #3', 'http://192.168.1.101:81/stream',key="cam3",label_visibility="collapsed",placeholder="cam #3 url")
-   try:
-      st.image(cam3,use_column_width =True)
-   except:
-      st.image("Original-colour-bar.png")
-with col4:
-   cam4 = st.text_input('cam #4', 'http://192.168.1.101:81/stream',key="cam4",label_visibility="collapsed",placeholder="cam #4 url")
-   try:
-      st.image(cam4,use_column_width =True)
-   except:
-      st.image("Original-colour-bar.png")
+# with col3:
+#    cam3 = st.text_input('cam #3', 'http://192.168.1.101:81/stream',key="cam3",label_visibility="collapsed",placeholder="cam #3 url")
+#    try:
+#       st.image(cam3,use_column_width =True)
+#    except:
+#       st.image("Original-colour-bar.png")
+# with col4:
+#    cam4 = st.text_input('cam #4', 'http://192.168.1.101:81/stream',key="cam4",label_visibility="collapsed",placeholder="cam #4 url")
+#    try:
+#       st.image(cam4,use_column_width =True)
+#    except:
+#       st.image("Original-colour-bar.png")
 
 
 
-https://github.com/athulaugustine/Live-cctv-feed-using-Streamlit
+# https://github.com/athulaugustine/Live-cctv-feed-using-Streamlit
