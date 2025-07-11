@@ -209,3 +209,10 @@ __marimo__/
 
 datasets/obj
 classified/*
+
+fire/*
+
+datasets/images/*
+datasets/labels/*
+
+pinstall/*
